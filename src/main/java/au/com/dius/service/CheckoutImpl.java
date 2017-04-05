@@ -1,6 +1,8 @@
 package au.com.dius.service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 import au.com.dius.domain.Item;
@@ -12,6 +14,8 @@ import au.com.dius.domain.PricingRule;
 public class CheckoutImpl implements Checkout
 {
     private final List<PricingRule> pricingRules;
+    private final List<Item> items = new ArrayList<Item>();
+
 
     public CheckoutImpl(List<PricingRule> pricingRules)
     {
@@ -20,11 +24,15 @@ public class CheckoutImpl implements Checkout
 
     public void scan(Item item)
     {
-
+        items.add(item);
     }
 
     public BigDecimal total()
     {
-        return null;
+        BigDecimal total = BigDecimal.ZERO;
+        for (Item item: items) {
+            total = total.add(item.getPrice());
+        }
+        return total;
     }
 }

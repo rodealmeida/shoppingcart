@@ -1,6 +1,7 @@
 package au.com.dius.service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class CheckoutImplTest
 
         // then
         assertNotNull(checkout.total());
-        assertEquals(new BigDecimal(2059.48), checkout.total());
+        assertEquals(new BigDecimal(2059.48).setScale(2, RoundingMode.HALF_UP), checkout.total().setScale(2, RoundingMode.HALF_UP));
     }
 
     /**
@@ -68,7 +69,7 @@ public class CheckoutImplTest
 
         // then
         assertNotNull(checkout.total());
-        assertEquals(new BigDecimal(249.0), checkout.total());
+        assertEquals(new BigDecimal(249.0).setScale(2, RoundingMode.HALF_UP), checkout.total().setScale(2, RoundingMode.HALF_UP));
     }
 
     /**
@@ -97,7 +98,7 @@ public class CheckoutImplTest
 
         // then
         assertNotNull(checkout.total());
-        assertEquals(new BigDecimal(2718.95), checkout.total());
+        assertEquals(new BigDecimal(2718.95).setScale(2, RoundingMode.HALF_UP), checkout.total().setScale(2, RoundingMode.HALF_UP));
     }
 
     /**
@@ -118,6 +119,6 @@ public class CheckoutImplTest
 
         // then
         assertNotNull(checkout.total());
-        assertEquals( new BigDecimal(1949.98), checkout.total());
+        assertEquals( new BigDecimal(1949.98).setScale(2, RoundingMode.HALF_UP), checkout.total().setScale(2, RoundingMode.HALF_UP));
     }
 }
