@@ -1,12 +1,11 @@
 package au.com.dius.service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
 import au.com.dius.domain.Item;
-import au.com.dius.domain.PricingRule;
+import au.com.dius.service.pricing.PricingRule;
 
 /**
  * Created by rodealmeida on 05/04/2017.
@@ -14,7 +13,7 @@ import au.com.dius.domain.PricingRule;
 public class CheckoutImpl implements Checkout
 {
     private final List<PricingRule> pricingRules;
-    private final List<Item> items = new ArrayList<Item>();
+    private final List<Item> items = new ArrayList<>();
 
 
     public CheckoutImpl(List<PricingRule> pricingRules)
@@ -29,10 +28,17 @@ public class CheckoutImpl implements Checkout
 
     public BigDecimal total()
     {
-        BigDecimal total = BigDecimal.ZERO;
-        for (Item item: items) {
-            total = total.add(item.getPrice());
+        BigDecimal totalDiscounts = BigDecimal.ZERO;
+        BigDecimal grandTotal = BigDecimal.ZERO;
+
+        for (PricingRule pricingrule: pricingRules) {
+            totalDiscounts = totalDiscounts.add(pricingrule.apply(items));
         }
-        return total;
+
+        for (Item item: items) {
+            grandTotal = grandTotal.add(item.getPrice());
+        }
+
+        return grandTotal.subtract(totalDiscounts);
     }
 }

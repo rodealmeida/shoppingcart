@@ -7,9 +7,9 @@ import java.math.BigDecimal;
  */
 public class Item
 {
-    private String sku;
-    private String name;
-    private BigDecimal price;
+    private final String sku;
+    private final String name;
+    private final BigDecimal price;
 
     public Item(String sku, String name, BigDecimal price)
     {
@@ -23,29 +23,14 @@ public class Item
         return sku;
     }
 
-    public void setSku(String sku)
-    {
-        this.sku = sku;
-    }
-
     public String getName()
     {
         return name;
     }
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
     public BigDecimal getPrice()
     {
         return price;
-    }
-
-    public void setPrice(BigDecimal price)
-    {
-        this.price = price;
     }
 
     @Override

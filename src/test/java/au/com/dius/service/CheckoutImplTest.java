@@ -12,7 +12,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import au.com.dius.domain.Item;
-import au.com.dius.domain.PricingRule;
+import au.com.dius.service.pricing.BulkBuyFreeItemPricingRule;
+import au.com.dius.service.pricing.BulkBuyPricingRule;
+import au.com.dius.service.pricing.ComplimentaryFreeItemPricingRule;
+import au.com.dius.service.pricing.PricingRule;
 
 /**
  * Unit test for CheckoutImpl.
@@ -24,7 +27,15 @@ public class CheckoutImplTest
     @Before
     public void setUp() throws Exception
     {
-        List<PricingRule> pricingRules = new ArrayList<PricingRule>();
+        List<PricingRule> pricingRules = new ArrayList<>();
+        PricingRule bulkPricingRule = new BulkBuyPricingRule("ipd", 4, new BigDecimal(50));
+        PricingRule bulkPricingFreeItemRule = new BulkBuyFreeItemPricingRule("atv", 2, new BigDecimal(109.5));
+        PricingRule complimentaryFreeItemPricingRule = new ComplimentaryFreeItemPricingRule("mbp", new BigDecimal(30.0));
+
+        pricingRules.add(bulkPricingRule);
+        pricingRules.add(bulkPricingFreeItemRule);
+        pricingRules.add(complimentaryFreeItemPricingRule);
+
         checkout = new CheckoutImpl(pricingRules);
     }
 
@@ -32,12 +43,12 @@ public class CheckoutImplTest
      * Checks that the total for scanned items is correct (no discounts applied).
      */
     @Test
-    public void shouldCalculateTotalForItemsWithNoDiscount()
+    public void shouldCalculateTotalForItemsWithNoDiscountApplied()
     {
         // given
         Item item1 = new Item("ipd", "Super iPad", new BigDecimal(549.99));
-        Item item2 = new Item("mbp", "MacBook Pro", new BigDecimal(1399.99));
         Item item3 = new Item("atv", "Apple TV", new BigDecimal(109.5));
+        Item item2 = new Item("vga", "VGA adapter", new BigDecimal(30.0));
 
         // when
         checkout.scan(item1);
@@ -46,7 +57,7 @@ public class CheckoutImplTest
 
         // then
         assertNotNull(checkout.total());
-        assertEquals(new BigDecimal(2059.48).setScale(2, RoundingMode.HALF_UP), checkout.total().setScale(2, RoundingMode.HALF_UP));
+        assertEquals(new BigDecimal(689.49).setScale(2, RoundingMode.HALF_UP), checkout.total().setScale(2, RoundingMode.HALF_UP));
     }
 
     /**
