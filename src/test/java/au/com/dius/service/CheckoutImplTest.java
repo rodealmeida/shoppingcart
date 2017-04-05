@@ -28,6 +28,27 @@ public class CheckoutImplTest
     }
 
     /**
+     * Checks that the total for scanned items is correct (no discounts applied).
+     */
+    @Test
+    public void shouldCalculateTotalForItemsWithNoDiscount()
+    {
+        // given
+        Item item1 = new Item("ipd", "Super iPad", new BigDecimal(549.99));
+        Item item2 = new Item("mbp", "MacBook Pro", new BigDecimal(1399.99));
+        Item item3 = new Item("atv", "Apple TV", new BigDecimal(109.5));
+
+        // when
+        checkout.scan(item1);
+        checkout.scan(item2);
+        checkout.scan(item3);
+
+        // then
+        assertNotNull(checkout.total());
+        assertEquals(new BigDecimal(2059.48), checkout.total());
+    }
+
+    /**
      * Checks that the 3 for 2 deal is being applied on items being checked out.
      */
     @Test
