@@ -1,5 +1,7 @@
 package au.com.dius.service;
 
+import java.math.BigDecimal;
+
 import au.com.dius.domain.Item;
 
 /**
@@ -7,7 +9,17 @@ import au.com.dius.domain.Item;
  */
 public interface Checkout
 {
+    /**
+     * Scans a single item
+     *
+     * @param item to be scanned.
+     */
     void scan(Item item);
 
-    Double total();
+    /**
+     * Calculates the total for the scanned items.
+     *
+     * @return the total amount if items have been scanned, {@code BigDecimal.ZERO} otherwise.
+     */
+    BigDecimal total();
 }
